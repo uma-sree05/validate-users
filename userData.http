@@ -1,0 +1,30 @@
+GET http://localhost:3000/user
+###
+POST http://localhost:3000/register/
+
+Content-Type:application/json
+{
+    "name":"uma",
+    "username":"uma123",
+    "password":"uma@123",
+    "gender":"female",
+    "location":"Vijayawada"
+}
+###
+POST http://localhost:3000/user/login
+Content-Type: application/json
+{
+    "username":"uma123",
+    "password":"uma@123"
+}
+###
+
+PUT http://localhost:3000/change-password
+Content-Type: application/json
+
+{
+    "username": "uma123",
+    "oldPassword": "uma@123",
+    "newPassword": "uma@567"
+
+}
