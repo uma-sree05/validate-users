@@ -26,7 +26,7 @@ const initializeDbAndServer = async () => {
 initializeDbAndServer();
 
 // Get Books API
-app.get("/user/", async (request, response) => {
+app.get("/register", async (request, response) => {
   const getBooksQuery = `
   SELECT
     *
@@ -44,19 +44,19 @@ app.post("/register", async (request, response) => {
   const { username, name, password, gender, location } = request.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   const selectUserQuery = `
-     SELECT * FROM user 
+     SELECT username FROM user 
      WHERE 
-     userName='${username}';`;
+     username='${username}';`;
   const dbUser = await db.get(selectUserQuery);
 
   //SCENARIO 1
   if (dbUser === undefined) {
     const createUser = `INSERT INTO 
-    user(username,user,password,gender,location) 
+    user (username,name,password,gender,location) 
     VALUES(
         '${username}',
-        '${user}',
-        '${password}',
+        '${name}',
+        '${hashedPassword}',
         '${gender}',
         '${location}'
     );`;
@@ -82,10 +82,10 @@ app.post("/login", async (request, response) => {
 
   const selectUserQuery = `
     SELECT 
-    * 
+        *
     FROM user
      WHERE 
-     username='${username};`;
+     name ='${name};`;
   const dbUser = await db.get(selectUserQuery);
   if (dbUser === undefined) {
     //SCENARIO 1
@@ -112,7 +112,7 @@ app.put("/change-password", async (request, response) => {
   const selectUserQuery = `
      SELECT * FROM user 
      WHERE 
-     userName='${username}';`;
+     username='${username}';`;
   const dbUser = await db.get(selectUserQuery);
   if (dbUser === undefined) {
     response.status(400);
@@ -143,3 +143,5 @@ app.put("/change-password", async (request, response) => {
     }
   }
 });
+
+module.exports = app;
